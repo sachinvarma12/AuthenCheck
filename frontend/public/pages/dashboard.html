@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AuthenCheck</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/index.css">
+    <style>
+        .topbar { position: sticky; top:0; background:#fff; border-bottom:1px solid rgba(74,144,226,0.2); z-index:10; }
+        .topbar .container { display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+        .logo { display:flex; align-items:center; gap:10px; font-weight:700; }
+        .logo-icon { background: linear-gradient(135deg, var(--primary), var(--secondary)); width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
+        .card { background:#fff; border:1px solid rgba(74,144,226,0.2); border-radius:14px; padding:20px; box-shadow:0 8px 20px rgba(0,0,0,0.05); }
+        .muted { color: var(--gray); }
+        .kpi { font-size:28px; font-weight:700; }
+        .btn-small { padding:10px 14px; border-radius:10px; border:2px solid rgba(74,144,226,0.2); background:#fff; cursor:pointer; }
+        .uploader { border:2px dashed rgba(74,144,226,0.3); border-radius:12px; padding:20px; text-align:center; }
+        .table { width:100%; border-collapse: collapse; }
+        .table th, .table td { padding:12px; border-bottom:1px solid rgba(74,144,226,0.15); text-align:left; }
+        .status-good { color: var(--success); font-weight:600; }
+        .status-bad { color: var(--danger); font-weight:600; }
+    </style>
+    <button id="darkToggleDash" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode" style="position:fixed; right:16px; top:16px; z-index:50"><i class="fas fa-moon"></i></button>
+    <script>
+        (function(){
+            const btn = document.getElementById('darkToggleDash');
+            function apply(){
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark') { document.body.classList.add('dark'); btn.innerHTML = '<i class="fas fa-sun"></i>'; }
+                else { document.body.classList.remove('dark'); btn.innerHTML = '<i class="fas fa-moon"></i>'; }
+            }
+            window.addEventListener('load', apply);
+            if (btn) btn.addEventListener('click', function(){
+                const isDark = document.body.classList.toggle('dark');
+                try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(_) {}
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        })();
+    </script>
+    <script>
+        function logout(){
+            localStorage.removeItem('auth_user');
+            window.location.href = 'Login.html';
+        }
+        function mockAnalyze(){
+            const tbody = document.getElementById('history');
+            const row = document.createElement('tr');
+            row.innerHTML = '<td>sample.mp4</td><td>Video</td><td>89%</td><td class="status-good">Likely Authentic</td>';
+            tbody.prepend(row);
+            alert('Analysis complete');
+        }
+        window.addEventListener('load', () => {
+            const user = localStorage.getItem('auth_user');
+            if(!user){ window.location.href = 'Login.html'; return; }
+            const parsed = JSON.parse(user);
+            const nameEl = document.getElementById('welcomeName');
+            if(nameEl && parsed && parsed.name){ nameEl.textContent = parsed.name; }
+        });
+    </script>
+</head>
+<body>
+    <div class="topbar">
+        <div class="container">
+            <div class="logo"><div class="logo-icon"><i class="fas fa-shield-alt"></i></div> AuthenCheck</div>
+            <div>
+                <button class="btn btn-outline" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="container" style="padding:24px 0;">
+        <h2>Welcome, <span id="welcomeName">User</span></h2>
+        <p class="muted">Run authenticity checks and view your recent analyses</p>
+
+        <div class="grid" style="margin:16px 0;">
+            <div class="card">
+                <div class="muted">Today Checks</div>
+                <div class="kpi">3</div>
+            </div>
+            <div class="card">
+                <div class="muted">Avg Authenticity</div>
+                <div class="kpi">82%</div>
+            </div>
+            <div class="card">
+                <div class="muted">Suspicious</div>
+                <div class="kpi">1</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Quick Check</h3>
+            <div class="uploader" style="margin:12px 0;">
+                <p><i class="fas fa-cloud-upload-alt"></i> Drag & drop or choose file</p>
+                <input type="file" id="dashFile" style="display:none">
+                <button class="btn-small" onclick="document.getElementById('dashFile').click()">Choose File</button>
+                <button class="btn btn-primary" style="margin-left:10px" onclick="mockAnalyze()">Analyze</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+            <h3>Recent Analyses</h3>
+            <table class="table">
+                <thead>
+                    <tr><th>Item</th><th>Type</th><th>Score</th><th>Status</th></tr>
+                </thead>
+                <tbody id="history">
+                    <tr><td>news-article.html</td><td>Text</td><td>76%</td><td class="status-good">Likely Authentic</td></tr>
+                    <tr><td>clip.mov</td><td>Video</td><td>48%</td><td class="status-bad">Suspicious</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+</html>
+

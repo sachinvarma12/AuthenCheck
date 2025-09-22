@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- FontAwesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>AuthenCheck</title>
+    <link rel="stylesheet" href="../src/index.css">
+    <style>
+      /* minimal nav/dropdown styles for header */
+      .main-nav { display:flex; align-items:center; gap:24px; }
+      .main-nav .nav-list { list-style:none; display:flex; gap:22px; margin:0; padding:0; }
+      .main-nav a { text-decoration:none; color:inherit; font-weight:600; }
+      .dropdown { position:relative; }
+      .dropdown-toggle { display:flex; align-items:center; gap:6px; }
+      .dropdown-menu { position:absolute; top:120%; left:0; background:rgba(60,60,60,0.95); color:#fff; padding:14px 0; border-radius:8px; min-width:220px; box-shadow:0 10px 24px rgba(0,0,0,0.15); display:none; }
+      .dropdown-menu a { display:block; padding:10px 16px; color:#fff; }
+      .dropdown-menu a:hover { background:rgba(255,255,255,0.08); }
+      .dropdown:hover .dropdown-menu { display:block; }
+      header .header-row { display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+    </style>
+  </head>
+  <body>
+    <header>
+        <div class="container">
+            <div class="header-row">
+                <a href="index.html" class="logo brand">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <span>AuthenCheck</span>
+                </a>
+                <nav class="main-nav" aria-label="Primary">
+                    <ul class="nav-list">
+                        <li><a href="#home">Home</a></li>
+                        <li class="dropdown">
+                            <a href="#products" class="dropdown-toggle">AI Detection Products <i class="fas fa-chevron-down" style="font-size:12px"></i></a>
+                            <div class="dropdown-menu">
+                                <a href="#text-detector">AI Text Detector</a>
+                                <a href="#audio-detector">AI Audio Detector</a>
+                            </div>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#library" class="dropdown-toggle">Library <i class="fas fa-chevron-down" style="font-size:12px"></i></a>
+                            <div class="dropdown-menu">
+                                <a href="#docs">Documentation</a>
+                                <a href="#blog">Blog</a>
+                            </div>
+                        </li>
+                        <li><a href="#features">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <a href="pages/signup.html" class="btn btn-primary">Free trial</a>
+                    <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Detect Deepfakes with AI-Powered Precision</h1>
+                <p>AuthenCheck uses advanced neural networks to identify AI-generated content and misinformation in real-time, protecting individuals and organizations from digital deception.</p>
+                <div class="hero-buttons">
+                    <a href="pages/signup.html" class="btn btn-primary">Get Started</a>
+                    <a href="#upload-section" class="btn btn-outline">View Demo</a>
+                </div>
+            </div>
+        </div>
+        <img id="heroSlide" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="AI Technology" class="hero-image floating">
+    </section>
+
+    <section class="upload-section" id="upload-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Verify Content Authenticity</h2>
+                <p>Upload media or paste a URL to check for AI-generated manipulation</p>
+            </div>
+            
+            <div class="upload-container">
+                <div class="upload-box" id="uploadBox">
+                    <input type="file" id="fileInput" accept=".mp4,.mov,.jpg,.jpeg,.png,.mp3" style="display: none;" multiple>
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drag & Drop Files Here</h3>
+                    <p>Supported formats: MP4, MOV, JPG, PNG, MP3</p>
+                    <p>Maximum file size: 500MB</p>
+                    <button type="button" class="btn btn-outline" style="margin-top: 15px;" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-folder-open"></i>
+                        Choose Files
+                    </button>
+                </div>
+                
+                <div class="or-divider">OR</div>
+                
+                <div class="url-input">
+                    <input type="text" id="urlInput" placeholder="Paste URL from social media, news site, or messaging platform">
+                    <button class="btn btn-primary" id="analyzeBtn">Analyze</button>
+                </div>
+            </div>
+
+            <div id="recognitionResults" class="demo-results" style="display:none; margin-top:20px;">
+                <div class="demo-header">
+                    <h3>Recognition Results</h3>
+                    <p>Top predictions from CNN (MobileNetV2)</p>
+                </div>
+                <div id="recognitionList" style="padding:10px 0"></div>
+            </div>
+            
+            <!-- Demo Results Section -->
+            <div class="demo-results" id="demoResults" style="display: none;">
+                <div class="demo-header">
+                    <h3>Demo Analysis Results</h3>
+                    <p>This is a demonstration of how AuthenCheck analyzes content</p>
+                </div>
+                
+                <div class="demo-content">
+                    <div class="demo-media">
+                        <div class="media-preview">
+                            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80" alt="Demo Content" id="demoImage">
+                            <div class="media-overlay">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-analysis">
+                        <div class="analysis-score">
+                            <div class="score-circle">
+                                <span id="demoScore">85%</span>
+                            </div>
+                            <div class="score-text">
+                                <h4 id="demoStatus">Likely Authentic</h4>
+                                <p id="demoDescription">This content shows minimal signs of AI manipulation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-details">
+                            <div class="detail-item">
+                                <span>Facial Analysis</span>
+                                <span class="score-good">92% Authentic</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Audio Quality</span>
+                                <span class="score-good">88% Natural</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Texture Analysis</span>
+                                <span class="score-fair">75% Consistent</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Metadata Check</span>
+                                <span class="score-good">Verified</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Source Verification</span>
+                                <span class="score-good">Trusted Publisher</span>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-actions">
+                            <button class="btn btn-primary" onclick="runNewDemo()">
+                                <i class="fas fa-redo"></i>
+                                Try Another Demo
+                            </button>
+                            <button class="btn btn-outline" onclick="closeDemo()">
+                                <i class="fas fa-times"></i>
+                                Close Demo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="section-title" id="features">
+                <h2>Advanced Detection Technology</h2>
+                <p>Our platform combines cutting-edge AI with blockchain verification for unprecedented accuracy</p>
+            </div>
+            
+            <div class="demo-controls" style="text-align: center; margin-bottom: 30px;">
+                <button class="btn btn-primary" onclick="showAllDemos()" style="margin-right: 15px;">
+                    <i class="fas fa-play-circle"></i>
+                    Show All Demos
+                </button>
+                <button class="btn btn-outline" onclick="startAutoDemo()">
+                    <i class="fas fa-magic"></i>
+                    Auto Demo Mode
+                </button>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" onclick="showFeatureDemo('deepfake')">
+                    <i class="fas fa-video"></i>
+                    <h3>Deepfake Detection</h3>
+                    <p>Advanced AI models analyze videos and images for manipulation signs using facial mapping, audio synchronization, and texture analysis.</p>
+                    <div class="feature-demo-btn">
+                        <i class="fas fa-play"></i>
+                        Try Demo
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="showFeatureDemo('text')">
+                    <i class="fas fa-newspaper"></i>
+                    <h3>Text Analysis</h3>
+                    <p>NLP algorithms verify claims in news articles and social media posts against trusted databases and fact-checking sources.</p>
+                    <div class="feature-demo-btn">
+                        <i class="fas fa-play"></i>
+                        Try Demo
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="showFeatureDemo('extension')">
+                    <i class="fas fa-plug"></i>
+                    <h3>Browser Extension</h3>
+                    <p>Get real-time authenticity scores while browsing social media with our browser extension.</p>
+                    <div class="feature-demo-btn">
+                        <i class="fas fa-download"></i>
+                        Install
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="showFeatureDemo('blockchain')">
+                    <i class="fas fa-link"></i>
+                    <h3>Blockchain Verification</h3>
+                    <p>Create immutable records of verified content to prevent re-sharing of manipulated media.</p>
+                    <div class="feature-demo-btn">
+                        <i class="fas fa-eye"></i>
+                        View Demo
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="showFeatureDemo('crowd')">
+                    <i class="fas fa-users"></i>
+                    <h3>Crowd Reporting</h3>
+                    <p>Community-driven reporting system flags suspicious content for expert review.</p>
+                    <div class="feature-demo-btn">
+                        <i class="fas fa-flag"></i>
+                        Report
+                    </div>
+                </div>
+                
+                <div class="feature-card" onclick="showFeatureDemo('realtime')">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Real-Time Analysis</h3>
+                    <p>Get results in seconds with our optimized AI models that work on both mobile and desktop.</p>
+                    <div class="feature-demo-btn">
+                        <i class="fas fa-play"></i>
+                        Try Demo
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results" id="results">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sample Analysis Results</h2>
+                <p>See how AuthenCheck breaks down content authenticity with detailed reports</p>
+            </div>
+            
+            <div class="result-card" id="sampleResults">
+                <div class="score-display">
+                    <div class="score-circle" id="sampleScoreCircle">
+                        <span id="sampleScore">75%</span>
+                    </div>
+                    <div class="score-text">
+                        <h3 id="sampleStatus">Likely Authentic</h3>
+                        <p id="sampleDescription">This content shows minimal signs of AI manipulation</p>
+                    </div>
+                </div>
+                
+                <div class="details" id="sampleDetails">
+                    <div class="detail-item">
+                        <span>Facial Manipulation Detection</span>
+                        <span class="score-good">Low Confidence</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Audio Authenticity</span>
+                        <span class="score-good">92%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Texture Analysis</span>
+                        <span class="score-good">87% Consistent</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Source Verification</span>
+                        <span class="score-good">Verified Publisher</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Blockchain Record</span>
+                        <span class="score-good">Found (3 verifications)</span>
+                    </div>
+                </div>
+                
+                <div class="sample-actions">
+                    <button class="btn btn-primary" onclick="runSampleAnalysis()">
+                        <i class="fas fa-refresh"></i>
+                        Run New Analysis
+                    </button>
+                    <button class="btn btn-outline" onclick="showDetailedReport()">
+                        <i class="fas fa-chart-bar"></i>
+                        Detailed Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Flexible Pricing</h2>
+                <p>Designed to match individuals, teams, and enterprises</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" style="text-align:center">
+                    <i class="fas fa-seedling"></i>
+                    <h3>Starter</h3>
+                    <p class="muted">For personal use and demos</p>
+                    <h2 style="margin:10px 0">$0</h2>
+                    <ul style="text-align:left; margin:0 auto; max-width:260px">
+                        <li>10 checks/month</li>
+                        <li>Basic reports</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="pages/signup.html" class="btn btn-outline" style="margin-top:12px">Get Started</a>
+                </div>
+                <div class="feature-card" style="text-align:center; border:2px solid rgba(74,144,226,0.4)">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Pro</h3>
+                    <p class="muted">For professionals and startups</p>
+                    <h2 style="margin:10px 0">$29</h2>
+                    <ul style="text-align:left; margin:0 auto; max-width:260px">
+                        <li>1,000 checks/month</li>
+                        <li>Advanced analysis</li>
+                        <li>API access</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="pages/signup.html" class="btn btn-primary" style="margin-top:12px">Upgrade</a>
+                </div>
+                <div class="feature-card" style="text-align:center">
+                    <i class="fas fa-building"></i>
+                    <h3>Enterprise</h3>
+                    <p class="muted">Custom solutions at scale</p>
+                    <h2 style="margin:10px 0">Talk to us</h2>
+                    <ul style="text-align:left; margin:0 auto; max-width:260px">
+                        <li>Unlimited checks</li>
+                        <li>SLA & SSO</li>
+                        <li>On-prem options</li>
+                        <li>Dedicated success</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline" style="margin-top:12px">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get in touch</h2>
+                <p>We typically respond within one business day</p>
+            </div>
+            <div class="features-grid" style="align-items:stretch">
+                <div class="feature-card" style="display:flex; flex-direction:column; justify-content:space-between">
+                    <div>
+                        <h3><i class="fas fa-envelope"></i> Email</h3>
+                        <p class="muted">hello@authencheck.com</p>
+                    </div>
+                    <div>
+                        <h3><i class="fas fa-phone"></i> Phone</h3>
+                        <p class="muted">+1 (555) 555-1212</p>
+                    </div>
+                    <div>
+                        <h3><i class="fas fa-location-dot"></i> Office</h3>
+                        <p class="muted">123 Innovation Way, Suite 100</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label for="contactName">Your name</label>
+                                <input type="text" id="contactName" placeholder="Your name" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="contactEmail">Email</label>
+                                <input type="email" id="contactEmail" placeholder="Your email" required>
+                            </div>
+                            <div class="form-field form-span">
+                                <label for="contactMessage">Message</label>
+                                <textarea id="contactMessage" rows="5" placeholder="How can we help?" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" style="min-width:180px">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> AuthenCheck
+                </div>
+                <p>Combating misinformation with AI-powered verification</p>
+                
+                <div class="footer-links">
+                    <a href="#">About Us</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">API Documentation</a>
+                    <a href="#">Contact</a>
+                    <a href="pages/logout.html">Logout</a>
+                </div>
+                
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+                
+                <p class="copyright">&copy; 2025 AuthenCheck. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      (function() {
+        const form = document.getElementById('contactForm');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you! We\'ll get back to you soon.');
+            form.reset();
+          });
+        }
+        // Allow Enter key to trigger Analyze without clicking
+        const urlInput = document.getElementById('urlInput');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        if (urlInput && analyzeBtn) {
+          urlInput.addEventListener('keydown', function(e){
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              analyzeBtn.click();
+            }
+          });
+        }
+        // Theme toggle persistence
+        const darkBtn = document.getElementById('darkModeToggle');
+        function applyThemeFromStorage(){
+          try {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+              document.body.classList.add('dark');
+              if (darkBtn) darkBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+              document.body.classList.remove('dark');
+              if (darkBtn) darkBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+          } catch(_) {}
+        }
+        applyThemeFromStorage();
+        if (darkBtn) {
+          darkBtn.addEventListener('click', function(){
+            const isDark = document.body.classList.toggle('dark');
+            try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(_) {}
+            darkBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          });
+        }
+        // Auto Demo toggle
+        const autoBtn = document.getElementById('autoDemoToggle');
+        function updateAutoBtn(){
+          try { autoBtn.textContent = 'Auto Demo: ' + (localStorage.getItem('autoDemo') === 'on' ? 'On' : 'Off'); } catch(_) {}
+        }
+        if (autoBtn) {
+          updateAutoBtn();
+          autoBtn.addEventListener('click', function(){
+            try {
+              const current = localStorage.getItem('autoDemo');
+              if (current === 'on') {
+                localStorage.setItem('autoDemo', 'off');
+                if (window.stopAutoDemo) window.stopAutoDemo();
+              } else {
+                localStorage.setItem('autoDemo', 'on');
+                if (window.startAutoDemo) window.startAutoDemo();
+              }
+            } catch(_) {}
+            updateAutoBtn();
+          });
+        }
+
+        // Hero slideshow
+        const hero = document.getElementById('heroSlide');
+        const slides = [
+          'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          'https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+        ];
+        let slideIndex = 0;
+        function rotateSlide(){
+          if (!hero) return;
+          slideIndex = (slideIndex + 1) % slides.length;
+          hero.style.opacity = '0';
+          setTimeout(() => {
+            hero.src = slides[slideIndex];
+            hero.style.opacity = '1';
+          }, 300);
+        }
+        if (hero) setInterval(rotateSlide, 5000);
+
+        // Backend integration: CNN recognition (URL and File)
+        const API_BASE = 'http://127.0.0.1:8000';
+        const resultsBox = document.getElementById('recognitionResults');
+        const resultsList = document.getElementById('recognitionList');
+        function renderResults(items){
+          if (!resultsBox || !resultsList) return;
+          resultsList.innerHTML = '';
+          if (!items || !items.length) {
+            resultsList.innerHTML = '<p class="muted">No predictions.</p>';
+          } else {
+            items.forEach((it) => {
+              const p = document.createElement('p');
+              p.textContent = `${it.description || it.label}: ${(it.confidence*100).toFixed(1)}%`;
+              resultsList.appendChild(p);
+            });
+          }
+          resultsBox.style.display = 'block';
+        }
+        async function handleErrorResponse(res){
+          let detail = 'Unknown error';
+          try {
+            const data = await res.json();
+            detail = (data && (data.detail || data.message)) || detail;
+          } catch(_) {
+            try { detail = await res.text(); } catch(_) {}
+          }
+          throw new Error(`${res.status} ${res.statusText}: ${detail}`);
+        }
+        async function recognizeFromUrl(){
+          const url = (urlInput && urlInput.value || '').trim();
+          if (!url) { alert('Please paste an image URL.'); return; }
+          try {
+            const res = await fetch(`${API_BASE}/recognize/url`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url })
+            });
+            if (!res.ok) await handleErrorResponse(res);
+            const data = await res.json();
+            renderResults(data.results);
+          } catch (e) {
+            alert('Recognition failed: ' + e.message);
+          }
+        }
+        const fileInput = document.getElementById('fileInput');
+        async function recognizeFromFile(file){
+          if (!file) return;
+          const formData = new FormData();
+          formData.append('file', file);
+          try {
+            const res = await fetch(`${API_BASE}/recognize/file`, { method: 'POST', body: formData });
+            if (!res.ok) await handleErrorResponse(res);
+            const data = await res.json();
+            renderResults(data.results);
+          } catch (e) {
+            alert('Recognition failed: ' + e.message);
+          }
+        }
+        if (analyzeBtn) {
+          analyzeBtn.addEventListener('click', recognizeFromUrl);
+        }
+        if (fileInput) {
+          fileInput.addEventListener('change', function(){
+            if (fileInput.files && fileInput.files[0]) recognizeFromFile(fileInput.files[0]);
+          });
+        }
+      })();
+    </script>
+    <script src="../src/index.js"></script>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>

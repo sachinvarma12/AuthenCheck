@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - AuthenCheck</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/index.css">
+    <style>
+        .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-card { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: 20px; padding: 40px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(74,144,226,0.2); border: 1px solid rgba(74,144,226,0.3); }
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .logo { display:flex; align-items:center; justify-content:center; gap:12px; font-size:28px; font-weight:700; color: var(--dark); margin-bottom:10px; }
+        .logo-icon { background: linear-gradient(135deg, var(--primary), var(--secondary)); width:45px; height:45px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display:block; margin-bottom:8px; color: var(--dark); font-weight:500; font-size:14px; }
+        .form-group input { width:100%; padding:15px 20px; border:2px solid rgba(74,144,226,0.2); border-radius:12px; background: rgba(255,255,255,0.8); font-family:'Montserrat',sans-serif; }
+        .auth-btn { width:100%; padding:15px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; border:none; border-radius:12px; font-weight:600; cursor:pointer; }
+        .back-to-login { text-align:center; margin-top:15px; }
+        .back-to-home { position:absolute; top:20px; left:20px; color:var(--dark); text-decoration:none; font-weight:500; display:flex; align-items:center; gap:8px; }
+    </style>
+    <button id="darkToggleForgot" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode" style="position:fixed; right:16px; top:16px; z-index:50"><i class="fas fa-moon"></i></button>
+    <script>
+        (function(){
+            const btn = document.getElementById('darkToggleForgot');
+            function apply(){
+                const theme = localStorage.getItem('theme');
+                if (theme === 'dark') { document.body.classList.add('dark'); btn.innerHTML = '<i class="fas fa-sun"></i>'; }
+                else { document.body.classList.remove('dark'); btn.innerHTML = '<i class="fas fa-moon"></i>'; }
+            }
+            window.addEventListener('load', apply);
+            if (btn) btn.addEventListener('click', function(){
+                const isDark = document.body.classList.toggle('dark');
+                try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(_) {}
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        })();
+    </script>
+    <script>
+        function submitReset(e){
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            if(!email){ return; }
+            const btn = document.getElementById('resetBtn');
+            const original = btn.innerHTML;
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            setTimeout(()=>{ alert('Password reset link sent to '+email); btn.disabled = false; btn.innerHTML = original; },1500);
+        }
+    </script>
+</head>
+<body>
+    <a href="../index.html" class="back-to-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+                    <span>AuthenCheck</span>
+                </div>
+                <h1>Forgot Password</h1>
+                <p>Enter your email to receive a reset link</p>
+            </div>
+            <form onsubmit="submitReset(event)">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <button id="resetBtn" class="auth-btn"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
+            </form>
+            <div class="back-to-login">
+                Remembered your password? <a href="Login.html">Back to Login</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
